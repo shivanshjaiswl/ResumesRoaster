@@ -8,7 +8,7 @@ app = Flask(__name__)
 load_dotenv()
 
 # Get the API key from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("resumes-roster/.env")
 # Define a route for handling PDF uploads and roasting resumes
 @app.route('/roast_resume', methods=['POST'])
 def roast_resume():
