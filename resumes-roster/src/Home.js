@@ -71,7 +71,7 @@ const styles = {
     textAlign: 'left',
     fontFamily: 'Raleway, sans-serif',
     letterSpacing: '0.2em',
-    fontWeight: '450',
+    fontWeight: '550',
   },
   buttonContainer: {
     display: 'flex',

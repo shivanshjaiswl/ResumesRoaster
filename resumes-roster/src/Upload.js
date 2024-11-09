@@ -5,7 +5,7 @@ const Upload = () => {
   const [text, setText] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [fade, setFade] = useState(false);
-  const fullText = "Hi, I'm an A.I. trained to evaluate resumes. To get started, I'll need to log into your Gmail to see all your application rejections.<br /><br />I'm just gonna look at your rejection emails. I won't post or change anything.";
+  const fullText = "Let's see what you've got, upload your resume. <br /><br /> <br /><br /> ....I promise I won't sell your data lol";
 
   useEffect(() => {
     // Load the Raleway font from Google Fonts
@@ -44,7 +44,7 @@ const Upload = () => {
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            <button style={styles.loginButton}>Login with Gmail</button>
+            <button style={styles.loginButton}>Upload your resume</button>
           </div>
         )}
       </div>
@@ -53,41 +53,42 @@ const Upload = () => {
 };
 
 const styles = {
-  centeredPage: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '40vh',
-    textAlign: 'center',
-    padding: '20px',
-  },
-  textContainer: {
-    maxWidth: '450px',
-    textAlign: 'left',
-  },
-  centeredText: {
-    fontSize: '16px',
-    color: '#555',
-    textAlign: 'left',
-    fontFamily: 'Raleway, sans-serif',
-    letterSpacing: '0.1em',
-    fontWeight: '700',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end', // Aligns button to the right
-  },
-  loginButton: {
-    marginTop: '20px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    backgroundColor: 'white',
-    color: 'black',
-    border: '2px solid black',
-    cursor: 'pointer',
-    borderRadius: '5px',
-    fontFamily: 'Raleway, sans-serif',
-  },
-};
-
-export default Upload;
+    centeredPage: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '70vh',
+      textAlign: 'center',
+      padding: '20px',
+    },
+    textContainer: {
+      maxWidth: '450px',
+      textAlign: 'left',
+    },
+    centeredText: {
+      fontSize: '14px',
+      color: 'black',
+      textAlign: 'left',
+      fontFamily: 'Raleway, sans-serif',
+      letterSpacing: '0.2em',
+      fontWeight: '550',
+    },
+    buttonContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end', // Aligns button to the right
+    },
+    loginButton: {
+      marginTop: '20px',
+      padding: '10px 15px',
+      fontSize: '13px',
+      backgroundColor: 'white',
+      color: 'black',
+      border: '1px solid black',
+      cursor: 'pointer',
+      borderRadius: '5px',
+      fontFamily: 'Raleway, sans-serif',
+    },
+  };
+  
+  export default Upload;
+  
