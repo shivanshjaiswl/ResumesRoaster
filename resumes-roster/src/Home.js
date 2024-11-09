@@ -5,7 +5,7 @@ const Home = () => {
   const [text, setText] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [fade, setFade] = useState(false);
-  const fullText = "Hi, I'm an A.I. trained to evaluate resumes. To get started, I'll need to log into your Gmail to see all your application rejections.<br /><br />I'm just gonna look at your rejection emails. I won't post or change anything.";
+  const fullText = "Hi, I'm an A.I. trained to evaluate resumes. To get started, I'll need to log into your Gmail to see all your application rejections.\n\nI'm just gonna look at your rejection emails. I won't post or change anything.";
 
   useEffect(() => {
     // Load the Raleway font from Google Fonts
@@ -18,8 +18,7 @@ const Home = () => {
 
     const typeWriter = () => {
       if (index < fullText.length) {
-        const currentText = fullText.substring(0, index + 1).replace(/<br \/>/g, '\n');
-        setText(currentText);
+        setText((prevText) => fullText.substring(0, index + 1));
         index++;
         setTimeout(typeWriter, 50);
       } else {
@@ -34,13 +33,9 @@ const Home = () => {
   return (
     <div style={styles.centeredPage}>
       <div style={styles.textContainer}>
-        <p style={styles.centeredText}>
-          {text.split('\n').map((item, idx) => (
-            <React.Fragment key={idx}>
-              {item}
-              <br />
-            </React.Fragment>
-          ))}
+        <p style={{ ...styles.centeredText}}>
+          {text}
+          <span style={styles.cursor}>█</span> {/* Blinking cursor at the end of the text */}
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
@@ -72,13 +67,21 @@ const styles = {
     fontFamily: 'Raleway, sans-serif',
     letterSpacing: '0.2em',
     fontWeight: '550',
+    whiteSpace: 'pre-wrap', // Maintain line breaks
+    display: 'inline',
+  },
+  cursor: {
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: 'gray',
+    animation: 'blink 1s step-end infinite', // Blinking effect
   },
   buttonContainer: {
     display: 'flex',
-    justifyContent: 'flex-end', // Aligns button to the right
+    justifyContent: 'flex-end',
   },
   loginButton: {
-    marginTop: '20px',
+    marginTop: '40px',
     padding: '10px 15px',
     fontSize: '13px',
     backgroundColor: 'white',
@@ -89,5 +92,18 @@ const styles = {
     fontFamily: 'Raleway, sans-serif',
   },
 };
+
+// Blinking cursor keyframes
+const cursorKeyframes = `
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`;
+
+// Inject the keyframes into the document
+const styleSheet = document.styleSheets[0];
+styleSheet.insertRule(cursorKeyframes, styleSheet.cssRules.length);
 
 export default Home;
