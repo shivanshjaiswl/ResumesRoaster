@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+// src/components/home.js
+import React from 'react';
 
-function App() {
+const SimpleCenteredText = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={styles.centeredPage}>
+      <h1 style={styles.centeredText}><p>Welcome to the Resumes Roste Hi, I'm an A.I. trained to evaluate resumes.</p>  <p>To get started, I'll need to log into your Gmail to see all your application rejections.
+        I'm just gonna look at your rejection emails. I won't post or change anything.</p></h1>
     </div>
   );
-}
+};
 
-export default App;
+const styles = {
+  centeredPage: {
+    display: 'flex',
+    alignItems: 'center',
+    height: '100vh',
+    width: '80vh'
+  },
+  centeredText: {
+    fontSize: '12px',
+    color: '#333',
+  },
+};
+
+export default SimpleCenteredText;
