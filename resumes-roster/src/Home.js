@@ -1,5 +1,6 @@
 // src/components/home.js
 import React, { useEffect, useState } from 'react';
+import LoginButton from './src/components/LoginButton';
 
 const Home = () => {
   const [text, setText] = useState('');
@@ -39,7 +40,8 @@ const Home = () => {
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            <button style={styles.loginButton}>Login with Gmail</button>
+            {/* <button style={styles.loginButton}>Login with Gmail</button> */}
+            <LoginButton />
           </div>
         )}
       </div>
