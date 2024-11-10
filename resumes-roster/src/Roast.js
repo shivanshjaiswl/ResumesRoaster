@@ -96,7 +96,7 @@ const Roast = () => {
     }
 
     if (phaseIndex === 10) {
-      await typeWriterMessage(response.toLowerCase() === 'yes' ? "Hard to believe." : "Clearly.");
+      await typeWriterMessage(response.toLowerCase() === 'yes' ? "Hard to believe." : "I can visibly tell.");
     }
 
     const nextPhaseIndex = messages.filter(msg => msg.isAI).length;
