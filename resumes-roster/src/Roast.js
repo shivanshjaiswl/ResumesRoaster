@@ -5,6 +5,7 @@ const Roast = () => {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [showYesNoButtons, setShowYesNoButtons] = useState(false);
+
   const [showOkayButtons, setShowOkayButtons] = useState(false);
   // const [phases, setPhases] = useState([]);
   const pageEndRef = useRef(null);
@@ -195,13 +196,7 @@ const Roast = () => {
             ))}
           </div>
         )}
-        {showYesNoButtons && (
-          <div style={styles.flexEndButtonContainer}>
-            <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
-          </div>
-        )}
-        {showOkayButtons && (
+        {(
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
             <button style={styles.choiceButton} onClick={() => handleResponse("no")}>no...</button>
