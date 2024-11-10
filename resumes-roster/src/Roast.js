@@ -65,7 +65,7 @@ const Roast = () => {
     `You've been rejected by ${companyRoast.count} companies this year`,
     "u okay?",
     "You clearly haven't been to the career fair this year",
-    finalRoast.roast"
+    finalRoast.roast
   ];
 
   const typeWriter = async (phaseIndex = 0) => {
