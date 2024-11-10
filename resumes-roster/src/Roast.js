@@ -13,14 +13,13 @@ const Roast = () => {
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
     "Did you really get rejected by...",
-    "", // Placeholder for conditional phase 5
+    "", // Placeholder for conditional phase 5 based on response
     "oh great another finance bro",
     "Finding a lot of applications with no responses",
     "Like a LOT.",
     "You've been rejected by x amount of companies this year",
     "u okay?", 
-    "You clearly haven't been to the career fair this year",
-    "test",
+    "You clearly haven't been to the career fair this year either",
     "test"
   ];
 
@@ -32,7 +31,6 @@ const Roast = () => {
     setShowYesNoButtons(false);
     setShowOkayButtons(false);
 
-    // Type out the current phase text
     for (let i = 0; i < phases[phaseIndex].length; i++) {
       accumulatedText += phases[phaseIndex][i];
       setCurrentMessage(accumulatedText + '█');
@@ -47,7 +45,6 @@ const Roast = () => {
     });
     setCurrentMessage('');
 
-    // Show Yes/No buttons for the 4th phase only
     if (phaseIndex === 3 || phaseIndex === 4) {
       setShowYesNoButtons(true);
     } else if (phaseIndex === 9) {
@@ -80,20 +77,26 @@ const Roast = () => {
 
     // Update phase 5 based on response
     if (phaseIndex === 4) {
-      if (response.toLowerCase() === 'yes') {
-        phases[4] = "Like unironically?...";
-      } else {
-        phases[4] = "Are you sure, because I can see the email in my database?...";
-      }
-    } else if (phaseIndex === 5) {
-      const previousResponse = messages[messages.length - 2]?.text;
-      if (previousResponse?.toLowerCase() === 'no...' && response.toLowerCase() === 'yes') {
-        phases[5] = "Alright whatever man";
-        phases.splice(6, 0, "oh great another finance bro");
-      }
-    } else if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
+      phases[4] = response.toLowerCase() === 'yes'
+        ? "Like unironically?..."
+        : "Are you sure, because I can see the email in my database?...";
+    }
+
+    // Handle specific cases for "alright whatever man" and "listen i'm just a neural net"
+    if (phaseIndex === 5 && response.toLowerCase() === 'yes') {
+      await typeWriterMessage("Alright whatever man");
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      typeWriter(6); // Move to the next phase after displaying "Alright whatever man"
+      return;
+    }
+
+    if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
       await typeWriterMessage("listen i'm just a neural net do what you gotta do");
       return;
+    }
+
+    if (phaseIndex === 10) {
+      await typeWriterMessage(response.toLowerCase() === 'yes' ? "Hard to believe." : "Clearly.");
     }
 
     const nextPhaseIndex = messages.filter(msg => msg.isAI).length;
@@ -137,7 +140,7 @@ const Roast = () => {
         {showYesNoButtons && (
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("no")}>no...</button>
+            <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
           </div>
         )}
         {showOkayButtons && (
