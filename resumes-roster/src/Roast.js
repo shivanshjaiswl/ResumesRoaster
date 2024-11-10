@@ -1,26 +1,16 @@
 // src/components/home.js
 import React, { useEffect, useState, useRef } from 'react';
+import LoginButton from './src/components/LoginButton';
 
-const Roast = () => {
+const Home = () => {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
-  const [showYesNoButtons, setShowYesNoButtons] = useState(false);
-  const [showOkayButtons, setShowOkayButtons] = useState(false);
+  const [showLoginButton, setShowLoginButton] = useState(false);
   const pageEndRef = useRef(null);
 
   const phases = [
-    "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later.",
-    "Analyzing your rejection history...",
-    "lol\n\nomg\n\nokay hold up",
-    "Did you really get rejected by...",
-    "", // Placeholder for conditional phase 5 based on response
-    "oh great another finance bro",
-    "Finding a lot of applications with no responses",
-    "Like a LOT.",
-    "You've been rejected by x amount of companies this year",
-    "u okay?", 
-    "You clearly haven't been to the career fair this year either",
-    "test"
+    "Hi, I'm an A.I. trained to evaluate resumes. To get started, I'll need to log into your Gmail to see all your application rejections.",
+    "I'm just gonna look at your rejection emails. I won't post or change anything."
   ];
 
   const typeWriter = async (phaseIndex = 0) => {
@@ -28,8 +18,6 @@ const Roast = () => {
 
     let accumulatedText = '';
     setCurrentMessage('');
-    setShowYesNoButtons(false);
-    setShowOkayButtons(false);
 
     for (let i = 0; i < phases[phaseIndex].length; i++) {
       accumulatedText += phases[phaseIndex][i];
@@ -37,23 +25,16 @@ const Roast = () => {
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
 
-    setMessages((prevMessages) => {
-      if (!prevMessages.some(msg => msg.text === accumulatedText)) {
-        return [...prevMessages, { text: accumulatedText, isAI: true }];
-      }
-      return prevMessages;
-    });
+    setMessages((prevMessages) => [...prevMessages, { text: accumulatedText, isAI: true }]);
     setCurrentMessage('');
+    pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
 
-    if (phaseIndex === 3 || phaseIndex === 4) {
-      setShowYesNoButtons(true);
-    } else if (phaseIndex === 9) {
-      setShowOkayButtons(true);
+    if (phaseIndex === phases.length - 1) {
+      setShowLoginButton(true);
     } else {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       typeWriter(phaseIndex + 1);
     }
-    pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
@@ -65,57 +46,6 @@ const Roast = () => {
     setMessages([]);
     typeWriter(0);
   }, []);
-
-  const handleResponse = async (response) => {
-    const phaseIndex = messages.filter(msg => msg.isAI).length;
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { text: response, isAI: false }
-    ]);
-    setShowYesNoButtons(false);
-    setShowOkayButtons(false);
-
-    // Update phase 5 based on response
-    if (phaseIndex === 4) {
-      phases[4] = response.toLowerCase() === 'yes'
-        ? "Like unironically?..."
-        : "Are you sure, because I can see the email in my database?...";
-    }
-
-    // Handle specific cases for "alright whatever man" and "listen i'm just a neural net"
-    if (phaseIndex === 5 && response.toLowerCase() === 'yes') {
-      await typeWriterMessage("Alright whatever man");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      typeWriter(6); // Move to the next phase after displaying "Alright whatever man"
-      return;
-    }
-
-    if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
-      await typeWriterMessage("listen i'm just a neural net do what you gotta do");
-      return;
-    }
-
-    if (phaseIndex === 10) {
-      await typeWriterMessage(response.toLowerCase() === 'yes' ? "Hard to believe." : "I can visibly tell.");
-    }
-
-    const nextPhaseIndex = messages.filter(msg => msg.isAI).length;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    typeWriter(nextPhaseIndex);
-  };
-
-  const typeWriterMessage = async (message) => {
-    let accumulatedText = '';
-    setCurrentMessage('');
-    for (let i = 0; i < message.length; i++) {
-      accumulatedText += message[i];
-      setCurrentMessage(accumulatedText + '█');
-      await new Promise((resolve) => setTimeout(resolve, 50));
-    }
-    setMessages((prevMessages) => [...prevMessages, { text: accumulatedText, isAI: true }]);
-    setCurrentMessage('');
-    pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <div style={styles.centeredPage}>
@@ -137,16 +67,9 @@ const Roast = () => {
             ))}
           </div>
         )}
-        {showYesNoButtons && (
+        {showLoginButton && (
           <div style={styles.flexEndButtonContainer}>
-            <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
-          </div>
-        )}
-        {showOkayButtons && (
-          <div style={styles.flexEndButtonContainer}>
-            <button style={styles.choiceButton} onClick={() => handleResponse("Yes totally")}>Yes totally</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("Not really")}>Not really</button>
+            <LoginButton style={styles.loginButton} />
           </div>
         )}
         <div ref={pageEndRef} />
@@ -163,6 +86,7 @@ const styles = {
     flexDirection: 'column',
     padding: '20px',
     minHeight: '100vh',
+    backgroundColor: '#ffffff', // Adjusted background color for contrast
   },
   chatContainer: {
     maxWidth: '450px',
@@ -170,10 +94,14 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
+    padding: '10px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#f8f9fa', // Matches chat-style background
   },
   aiMessage: {
     alignSelf: 'flex-start',
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#e1e5ea',
     color: 'black',
     padding: '10px',
     borderRadius: '10px',
@@ -181,7 +109,7 @@ const styles = {
   },
   userMessage: {
     alignSelf: 'flex-end',
-    backgroundColor: 'black',
+    backgroundColor: '#007bff',
     color: 'white',
     padding: '10px',
     borderRadius: '10px',
@@ -193,16 +121,35 @@ const styles = {
     gap: '10px',
     marginTop: '10px',
   },
-  choiceButton: {
+  loginButton: {
     padding: '10px 20px',
     fontSize: '14px',
-    backgroundColor: 'black',
+    backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     cursor: 'pointer',
     borderRadius: '5px',
     fontFamily: 'Raleway, sans-serif',
   },
+  cursor: {
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: 'gray',
+    animation: 'blink 1s step-end infinite',
+  },
 };
 
-export default Roast;
+// Blinking cursor keyframes
+const cursorKeyframes = `
+  @keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`;
+
+// Inject the keyframes into the document
+const styleSheet = document.styleSheets[0];
+styleSheet.insertRule(cursorKeyframes, styleSheet.cssRules.length);
+
+export default Home;

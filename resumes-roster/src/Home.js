@@ -5,7 +5,6 @@ import LoginButton from './src/components/LoginButton';
 const Home = () => {
   const [text, setText] = useState('');
   const [showButton, setShowButton] = useState(false);
-  const [fade, setFade] = useState(false);
   const fullText = "Hi, I'm an A.I. trained to evaluate resumes. To get started, I'll need to log into your Gmail to see all your application rejections.\n\nI'm just gonna look at your rejection emails. I won't post or change anything.";
 
   useEffect(() => {
@@ -24,7 +23,6 @@ const Home = () => {
         setTimeout(typeWriter, 50);
       } else {
         setShowButton(true);
-        setTimeout(() => setFade(true), 2000); // Start fading after 2 seconds
       }
     };
 
@@ -34,7 +32,7 @@ const Home = () => {
   return (
     <div style={styles.centeredPage}>
       <div style={styles.textContainer}>
-        <p style={{ ...styles.centeredText}}>
+        <p style={styles.centeredText}>
           {text}
           <span style={styles.cursor}>█</span> {/* Blinking cursor at the end of the text */}
         </p>
@@ -56,40 +54,27 @@ const styles = {
     flexDirection: 'column',
     padding: '20px',
     minHeight: '100vh',
+    backgroundColor: '#ffffff',
   },
-  chatContainer: {
+  textContainer: {
     maxWidth: '450px',
     width: '100%',
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
-  },
-  aiMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#f0f0f0',
-    color: 'black',
     padding: '10px',
-    borderRadius: '10px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#f8f9fa',
+  },
+  centeredText: {
     fontFamily: 'Raleway, sans-serif',
+    color: '#000',
   },
-  userMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: 'black',
-    color: 'white',
-    padding: '10px',
-    borderRadius: '10px',
-    fontFamily: 'Raleway, sans-serif',
-  },
-  flexEndButtonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    gap: '10px',
-    marginTop: '10px',
-  },
-  choiceButton: {
+  loginButton: {
     padding: '10px 20px',
     fontSize: '14px',
-    backgroundColor: 'black',
+    backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     cursor: 'pointer',
