@@ -16,7 +16,7 @@ const Roast = () => {
   useEffect(() => {
     const fetchCompanyRoast = async () => {
       try {
-        const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/get_company', {
+        const response = await fetch('https://rncvk-2620-cc-8000-1c83-262b-339d-54ab-6fde.a.free.pinggy.link/get_company', {
           method: 'GET',
         });
 
@@ -37,7 +37,7 @@ const Roast = () => {
   useEffect(() => {
     const fetchFinalRoast = async () => {
       try {
-        const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/final_roast', {
+        const response = await fetch('https://rncvk-2620-cc-8000-1c83-262b-339d-54ab-6fde.a.free.pinggy.link/final_roast', {
           method: 'GET',
         });
 
@@ -59,7 +59,7 @@ const Roast = () => {
     "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later...",
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
-    `Did you really get rejected by ` + companyRoast.company,
+    `Did you really get rejected by Khan Academy`,
     "",
     companyRoast.roast,
     "Finding a lot of applications with no responses",
@@ -190,11 +190,6 @@ const Roast = () => {
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("Yes totally")}>Yes totally</button>
             <button style={styles.choiceButton} onClick={() => handleResponse("Not really")}>Not really</button>
-          </div>
-        )}
-        {showLoginButton && (
-          <div style={styles.flexEndButtonContainer}>
-            <button style={styles.loginButton} onClick={() => console.log("Login button clicked")}>Log In</button>
           </div>
         )}
         <div ref={pageEndRef} />

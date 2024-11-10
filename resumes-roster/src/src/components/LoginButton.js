@@ -4,7 +4,7 @@ function LoginButton() {
   const sendToken = async (token) => {
     try {
       const response = await fetch(
-        "https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/token_id",
+        "https://rncvk-2620-cc-8000-1c83-262b-339d-54ab-6fde.a.free.pinggy.link/token_id",
         {
           method: "POST",
           headers: {
