@@ -29,16 +29,24 @@ const Home = () => {
     typeWriter();
   }, []);
 
+  const handleResumeRoastClick = () => {
+    window.location.href = "/upload"; // This will redirect to the /upload route
+  };
+
   return (
     <div style={styles.centeredPage}>
       <div style={styles.textContainer}>
         <p style={styles.centeredText}>
           {text}
-          <span style={styles.cursor}>█</span> {/* Blinking cursor at the end of the text */}
+          <span style={styles.cursor}>█</span>{" "}
+          {/* Blinking cursor at the end of the text */}
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            <LoginButton style={styles.loginButton}/>
+            <LoginButton style={styles.loginButton} />
+            <button style={styles.roastButton} onClick={handleResumeRoastClick}>
+              Roast Resume
+            </button>
           </div>
         )}
       </div>
