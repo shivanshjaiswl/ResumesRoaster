@@ -62,10 +62,10 @@ const Roast = () => {
     companyRoast.roast || "Can't find any specific roast, but it's pretty bad...",
     "Finding a lot of applications with no responses",
     "Like a LOT.",
-    `You've been rejected by ${companyRoast.count || 0} companies this year`,
+    `You've been rejected by ${companyRoast.count} companies this year`,
     "u okay?",
     "You clearly haven't been to the career fair this year",
-    finalRoast.roast || "That's all the roasting I have for now!"
+    finalRoast.roast"
   ];
 
   const typeWriter = async (phaseIndex = 0) => {
