@@ -13,46 +13,46 @@ const Roast = () => {
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
     "Did you really get rejected by...",
-    "", // Placeholder for conditional phase 5,
+    "", // Placeholder for conditional phase 5
     "oh great another finance bro",
     "Finding a lot of applications with no responses",
     "Like a LOT.",
     "You've been rejected by x amount of companies this year",
-    "u okay?"
+    "u okay?", 
+    "You clearly haven't been to the career fair this year",
+    "test",
+    "test"
   ];
 
   const typeWriter = async (phaseIndex = 0) => {
     if (phaseIndex >= phases.length) return;
 
     let accumulatedText = '';
-    setCurrentMessage(''); // Clear currentMessage for new typing effect
-    setShowYesNoButtons(false); // Hide buttons during typing
-    setShowOkayButtons(false); // Hide Okay buttons during typing
+    setCurrentMessage('');
+    setShowYesNoButtons(false);
+    setShowOkayButtons(false);
 
     // Type out the current phase text
     for (let i = 0; i < phases[phaseIndex].length; i++) {
       accumulatedText += phases[phaseIndex][i];
-      setCurrentMessage(accumulatedText + '█'); // Add blinking cursor to current message
+      setCurrentMessage(accumulatedText + '█');
       await new Promise((resolve) => setTimeout(resolve, 50));
     }
 
-    // After typing completes, add the full phase message to messages only if not already added
     setMessages((prevMessages) => {
       if (!prevMessages.some(msg => msg.text === accumulatedText)) {
         return [...prevMessages, { text: accumulatedText, isAI: true }];
       }
       return prevMessages;
     });
-    setCurrentMessage(''); // Clear current message after pushing to messages
+    setCurrentMessage('');
 
-    // Show Yes/No buttons for the 4th and 5th phases
+    // Show Yes/No buttons for the 4th phase only
     if (phaseIndex === 3 || phaseIndex === 4) {
       setShowYesNoButtons(true);
     } else if (phaseIndex === 9) {
-      // Show Yes Totally/Not Really buttons for the "u okay?" phase
       setShowOkayButtons(true);
     } else {
-      // Proceed to the next phase after a delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       typeWriter(phaseIndex + 1);
     }
@@ -65,8 +65,8 @@ const Roast = () => {
     link.rel = "stylesheet";
     document.head.appendChild(link);
 
-    setMessages([]); // Start with an empty messages array
-    typeWriter(0); // Start typing with the first phase
+    setMessages([]);
+    typeWriter(0);
   }, []);
 
   const handleResponse = async (response) => {
@@ -75,9 +75,9 @@ const Roast = () => {
       ...prevMessages,
       { text: response, isAI: false }
     ]);
-    setShowYesNoButtons(false); // Hide Yes/No buttons after selection
-    setShowOkayButtons(false); // Hide Okay buttons after selection
-  
+    setShowYesNoButtons(false);
+    setShowOkayButtons(false);
+
     // Update phase 5 based on response
     if (phaseIndex === 4) {
       if (response.toLowerCase() === 'yes') {
@@ -92,13 +92,26 @@ const Roast = () => {
         phases.splice(6, 0, "oh great another finance bro");
       }
     } else if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
-      phases.splice(10, 0, "listen i'm just a neural net do what you gotta do");
+      await typeWriterMessage("listen i'm just a neural net do what you gotta do");
+      return;
     }
-  
-    // Continue to the next phase
-    const nextPhaseIndex = messages.filter(msg => msg.isAI).length; // Track the next phase based on messages length
+
+    const nextPhaseIndex = messages.filter(msg => msg.isAI).length;
     await new Promise((resolve) => setTimeout(resolve, 1000));
     typeWriter(nextPhaseIndex);
+  };
+
+  const typeWriterMessage = async (message) => {
+    let accumulatedText = '';
+    setCurrentMessage('');
+    for (let i = 0; i < message.length; i++) {
+      accumulatedText += message[i];
+      setCurrentMessage(accumulatedText + '█');
+      await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+    setMessages((prevMessages) => [...prevMessages, { text: accumulatedText, isAI: true }]);
+    setCurrentMessage('');
+    pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -124,7 +137,7 @@ const Roast = () => {
         {showYesNoButtons && (
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
+            <button style={styles.choiceButton} onClick={() => handleResponse("no")}>no...</button>
           </div>
         )}
         {showOkayButtons && (
@@ -187,23 +200,6 @@ const styles = {
     borderRadius: '5px',
     fontFamily: 'Raleway, sans-serif',
   },
-  cursor: {
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'gray',
-    animation: 'blink 1s step-end infinite',
-  },
 };
-
-// Add blinking cursor animation
-const cursorKeyframes = `
-  @keyframes blink {
-    0% { opacity: 1; }
-    50% { opacity: 0; }
-    100% { opacity: 1; }
-  }
-`;
-const styleSheet = document.styleSheets[0];
-styleSheet.insertRule(cursorKeyframes, styleSheet.cssRules.length);
 
 export default Roast;
