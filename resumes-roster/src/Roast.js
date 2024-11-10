@@ -5,11 +5,11 @@ const Roast = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [showYesNoButtons, setShowYesNoButtons] = useState(false);
   const [showOkayButtons, setShowOkayButtons] = useState(false);
-  const [showLoginButton, setShowLoginButton] = useState(false); // Add showLoginButton state
+  const [showLoginButton, setShowLoginButton] = useState(false); 
   const pageEndRef = useRef(null);
 
-  const [finalRoast, setFinalRoast] = useState('');
-  const [companyRoast, setCompanyRoast] = useState('');
+  const [finalRoast, setFinalRoast] = useState({});
+  const [companyRoast, setCompanyRoast] = useState({});
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -54,24 +54,23 @@ const Roast = () => {
     fetchFinalRoast();
   }, []);
 
-  const phases = ([
+  const phases = [
     "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later...",
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
-    `Did you really get rejected by ` + companyRoast.company,
-    "",
-    companyRoast.roast,
+    `Did you really get rejected by ${companyRoast.company || 'that company'}`,
+    companyRoast.roast || "Can't find any specific roast, but it's pretty bad...",
     "Finding a lot of applications with no responses",
     "Like a LOT.",
-    "You've been rejected by " + companyRoast.count + " companies this year",
+    `You've been rejected by ${companyRoast.count || 0} companies this year`,
     "u okay?",
     "You clearly haven't been to the career fair this year",
-    finalRoast.roast
-  ]);
+    finalRoast.roast || "That's all the roasting I have for now!"
+  ];
 
   const typeWriter = async (phaseIndex = 0) => {
     if (phaseIndex >= phases.length) {
-      setShowLoginButton(true); // Show login button after the last phase
+      setShowLoginButton(true); 
       return;
     }
 
@@ -80,7 +79,7 @@ const Roast = () => {
     setShowYesNoButtons(false);
     setShowOkayButtons(false);
 
-    for (let i = 0; i < phases[phaseIndex].length; i++) {
+    for (let i = 0; i < phases[phaseIndex]?.length; i++) {
       accumulatedText += phases[phaseIndex][i];
       setCurrentMessage(accumulatedText + '█');
       await new Promise((resolve) => setTimeout(resolve, 50));
