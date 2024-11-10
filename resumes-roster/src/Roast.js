@@ -4,7 +4,6 @@ const Roast = () => {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [showYesNoButtons, setShowYesNoButtons] = useState(false);
-
   const [showOkayButtons, setShowOkayButtons] = useState(false);
   const [showLoginButton, setShowLoginButton] = useState(false); // Add showLoginButton state
   const pageEndRef = useRef(null);
@@ -55,8 +54,8 @@ const Roast = () => {
     fetchFinalRoast();
   }, []);
 
-  const phases = ([ 
-    "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later.",
+  const phases = ([
+    "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later...",
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
     `Did you really get rejected by ` + companyRoast.company,
@@ -135,6 +134,7 @@ const Roast = () => {
       const previousResponse = messages[messages.length - 2]?.text;
       if (previousResponse?.toLowerCase() === 'no...' && response.toLowerCase() === 'yes') {
         phases[5] = "Alright whatever man";
+        phases.splice(6, 0, "oh great another finance bro");
       }
     } else if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
       await typeWriterMessage("listen i'm just a neural net do what you gotta do");
@@ -179,7 +179,13 @@ const Roast = () => {
             ))}
           </div>
         )}
-        {(
+        {showYesNoButtons && (
+          <div style={styles.flexEndButtonContainer}>
+            <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
+            <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
+          </div>
+        )}
+        {showOkayButtons && (
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("Yes totally")}>Yes totally</button>
             <button style={styles.choiceButton} onClick={() => handleResponse("Not really")}>Not really</button>
