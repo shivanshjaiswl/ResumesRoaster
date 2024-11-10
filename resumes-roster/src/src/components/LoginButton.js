@@ -1,25 +1,24 @@
-import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
 
 
 function LoginButton(){
- const handleLoginSuccess = (credentialResponse) => {
-    console.log('Access Token:', credentialResponse);
-    // Here, you can send the token to your backend for verification or use it for further logic
-  };
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+        console.log(tokenResponse)
+        console.log('Access Token:', tokenResponse.access_token);
+        // Use the access token to make API calls or pass it to your backend
+    },
+    onError: () => {
+        console.error('Login failed');
+    },
+    scope: 'https://www.googleapis.com/auth/gmail.readonly', // Add additional scopes if needed
+});
 
-  const handleLoginFailure = () => {
-    console.error('Login failed');
-  };
-
-  return (
-    <div>
-      <GoogleLogin
-        onSuccess={handleLoginSuccess}
-        onError={handleLoginFailure}
-        scope="https://www.googleapis.com/auth/gmail.readonly"
-      />
-    </div>
-  );
+return (
+    <button onClick={() => login()}>
+        Login with Google
+    </button>
+);
 }
 
 export default LoginButton;
