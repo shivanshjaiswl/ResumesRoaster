@@ -37,7 +37,18 @@ function LoginButton(){
 });
 
 return (
-    <button onClick={() => login()}>
+    <button  style={{
+      padding: '10px 20px',
+      fontSize: '14px',
+      backgroundColor: 'black',
+      color: 'white',
+      border: 'none',
+      cursor: 'pointer',
+      borderRadius: '5px',
+      fontFamily: 'Raleway, sans-serif',
+      marginRight: '20px',
+      marginLeft: '135px'
+    }} onClick={() => login()}>
         Login with Google
     </button>
 );

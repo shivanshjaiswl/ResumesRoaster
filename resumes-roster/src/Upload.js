@@ -36,24 +36,36 @@ const Upload = () => {
     if (file) {
       console.log("Selected file:", file.name);
       const formData = new FormData();
-      formData.append("resume", file);
-      const response = await fetch(
-        "http://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/upload_pdf",
-        {
-          method: "POST",
-          body: formData,
+      formData.append("file", file); // Changed "resume" to "file"
+  
+      try {
+        const response = await fetch(
+          "http://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/upload_pdf",
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              "Accept": "application/json",
+            },
+          }
+        );
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log("File uploaded successfully:", data);
+        } else {
+          console.error("File upload failed:", response.status, response.statusText);
+          const errorText = await response.text();
+          console.error("Error details:", errorText);
         }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("File uploaded successfully:", data);
-      } else {
-        console.error("File upload failed:", response.statusText);
+      } catch (error) {
+        console.error("Network or server error:", error.message);
       }
-      
+    } else {
+      console.error("No file selected.");
     }
   };
+    
 
   return (
     <div style={styles.centeredPage}>

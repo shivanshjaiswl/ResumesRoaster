@@ -30,7 +30,7 @@ const Home = () => {
   }, []);
 
   const handleResumeRoastClick = () => {
-    window.location.href = "/upload"; // This will redirect to the /upload route
+    window.location.href = "/roast"; // This will redirect to the /upload route
   };
 
   return (
@@ -38,13 +38,12 @@ const Home = () => {
       <div style={styles.textContainer}>
         <p style={styles.centeredText}>
           {text}
-          <span style={styles.cursor}>█</span>{" "}
-          {/* Blinking cursor at the end of the text */}
+          <span style={styles.cursor}>█</span>
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            <LoginButton style={styles.loginButton} />
-            <button style={styles.roastButton} onClick={handleResumeRoastClick}>
+            <LoginButton style={styles.choiceButton} />
+            <button style={styles.choiceButton} onClick={handleResumeRoastClick}>
               Roast Resume
             </button>
           </div>
@@ -79,10 +78,10 @@ const styles = {
     fontFamily: 'Raleway, sans-serif',
     color: '#000',
   },
-  loginButton: {
+  choiceButton: {
     padding: '10px 20px',
     fontSize: '14px',
-    backgroundColor: '#007bff',
+    backgroundColor: 'black',
     color: 'white',
     border: 'none',
     cursor: 'pointer',
