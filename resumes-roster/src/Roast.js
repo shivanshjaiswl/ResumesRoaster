@@ -1,4 +1,3 @@
-// src/components/home.js
 import React, { useEffect, useState, useRef } from 'react';
 
 const Roast = () => {
@@ -6,17 +5,12 @@ const Roast = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [showYesNoButtons, setShowYesNoButtons] = useState(false);
   const [showOkayButtons, setShowOkayButtons] = useState(false);
-  // const [phases, setPhases] = useState([]);
+  const [showLoginButton, setShowLoginButton] = useState(false); // Add showLoginButton state
   const pageEndRef = useRef(null);
 
-  // data calls for roasts
   const [finalRoast, setFinalRoast] = useState('');
   const [companyRoast, setCompanyRoast] = useState('');
   const [error, setError] = useState('');
-  // const [loading, setLoading]= useState(true);
-
-
-
 
   useEffect(() => {
     const fetchCompanyRoast = async () => {
@@ -24,21 +18,19 @@ const Roast = () => {
         const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/get_company', {
           method: 'GET',
         });
-  
+
         if (!response.ok) {
           throw new Error('Failed to fetch company roast');
         }
-  
-        const data = await response.json(); // Parse the response as JSON
-        console.log(data);
-        setCompanyRoast(data); // Store the parsed data in state
+
+        const data = await response.json();
+        setCompanyRoast(data);
       } catch (error) {
         setError(error.message);
       }
     };
-  
+
     fetchCompanyRoast();
-    
   }, []);
 
   useEffect(() => {
@@ -47,51 +39,47 @@ const Roast = () => {
         const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/final_roast', {
           method: 'GET',
         });
-  
+
         if (!response.ok) {
-          throw new Error('Failed to fetch company roast');
+          throw new Error('Failed to fetch final roast');
         }
-  
-        const data = await response.json(); // Parse the response as JSON
-        console.log(data);
-        setFinalRoast(data); // Store the parsed data in state
+
+        const data = await response.json();
+        setFinalRoast(data);
       } catch (error) {
         setError(error.message);
       }
     };
-  
+
     fetchFinalRoast();
-    
   }, []);
 
-  
-  var phases = ([
+  const phases = ([ 
     "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later.",
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
-    `Did you really get rejected by `+companyRoast.company,
-    "", // Placeholder for conditional phase 5
+    `Did you really get rejected by ` + companyRoast.company,
+    "",
     companyRoast.roast,
     "Finding a lot of applications with no responses",
     "Like a LOT.",
-    "You've been rejected by "+companyRoast.count+" companies this year",
-    "u okay?", 
+    "You've been rejected by " + companyRoast.count + " companies this year",
+    "u okay?",
     "You clearly haven't been to the career fair this year",
     finalRoast.roast
-  ])
-
-
-  
+  ]);
 
   const typeWriter = async (phaseIndex = 0) => {
-    if (phaseIndex >= phases.length) return;
+    if (phaseIndex >= phases.length) {
+      setShowLoginButton(true); // Show login button after the last phase
+      return;
+    }
 
     let accumulatedText = '';
     setCurrentMessage('');
     setShowYesNoButtons(false);
     setShowOkayButtons(false);
 
-    // Type out the current phase text
     for (let i = 0; i < phases[phaseIndex].length; i++) {
       accumulatedText += phases[phaseIndex][i];
       setCurrentMessage(accumulatedText + '█');
@@ -106,7 +94,6 @@ const Roast = () => {
     });
     setCurrentMessage('');
 
-    // Show Yes/No buttons for the 4th phase only
     if (phaseIndex === 3 || phaseIndex === 4) {
       setShowYesNoButtons(true);
     } else if (phaseIndex === 9) {
@@ -137,7 +124,6 @@ const Roast = () => {
     setShowYesNoButtons(false);
     setShowOkayButtons(false);
 
-    // Update phase 5 based on response
     if (phaseIndex === 4) {
       if (response.toLowerCase() === 'yes') {
         phases[4] = "Like unironically?...";
@@ -148,7 +134,6 @@ const Roast = () => {
       const previousResponse = messages[messages.length - 2]?.text;
       if (previousResponse?.toLowerCase() === 'no...' && response.toLowerCase() === 'yes') {
         phases[5] = "Alright whatever man";
-        phases.splice(6, 0, "oh great another finance bro");
       }
     } else if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
       await typeWriterMessage("listen i'm just a neural net do what you gotta do");
@@ -172,8 +157,6 @@ const Roast = () => {
     setCurrentMessage('');
     pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
-
-
 
   return (
     <div style={styles.centeredPage}>
@@ -203,14 +186,13 @@ const Roast = () => {
         )}
         {showOkayButtons && (
           <div style={styles.flexEndButtonContainer}>
-            <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
-            <button style={styles.choiceButton} onClick={() => handleResponse("no")}>no...</button>
-          </div>
-        )}
-        {showOkayButtons && (
-          <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("Yes totally")}>Yes totally</button>
             <button style={styles.choiceButton} onClick={() => handleResponse("Not really")}>Not really</button>
+          </div>
+        )}
+        {showLoginButton && (
+          <div style={styles.flexEndButtonContainer}>
+            <button style={styles.loginButton} onClick={() => console.log("Login button clicked")}>Log In</button>
           </div>
         )}
         <div ref={pageEndRef} />
@@ -261,6 +243,16 @@ const styles = {
     padding: '10px 20px',
     fontSize: '14px',
     backgroundColor: 'black',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    fontFamily: 'Raleway, sans-serif',
+  },
+  loginButton: {
+    padding: '10px 15px',
+    fontSize: '14px',
+    backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     cursor: 'pointer',

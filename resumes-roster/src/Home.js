@@ -94,6 +94,16 @@ const styles = {
     borderRadius: '5px',
     fontFamily: 'Raleway, sans-serif',
   },
+  roastButton: {
+    padding: '10px 15px',
+    fontSize: '13px',
+    backgroundColor: 'white',
+    color: 'black',
+    border: '1px solid black',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    fontFamily: 'Raleway, sans-serif',
+  },
   cursor: {
     fontWeight: "bold",
     fontSize: "14px",
