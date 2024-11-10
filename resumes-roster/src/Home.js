@@ -53,44 +53,54 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '70vh',
-    textAlign: 'center',
+    flexDirection: 'column',
     padding: '20px',
+    minHeight: '100vh',
   },
-  textContainer: {
+  chatContainer: {
     maxWidth: '450px',
-    textAlign: 'left',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
   },
-  centeredText: {
-    fontSize: '14px',
+  aiMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#f0f0f0',
     color: 'black',
-    textAlign: 'left',
+    padding: '10px',
+    borderRadius: '10px',
     fontFamily: 'Raleway, sans-serif',
-    letterSpacing: '0.2em',
-    fontWeight: '550',
-    whiteSpace: 'pre-wrap', // Maintain line breaks
-    display: 'inline',
+  },
+  userMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: 'black',
+    color: 'white',
+    padding: '10px',
+    borderRadius: '10px',
+    fontFamily: 'Raleway, sans-serif',
+  },
+  flexEndButtonContainer: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  choiceButton: {
+    padding: '10px 20px',
+    fontSize: '14px',
+    backgroundColor: 'black',
+    color: 'white',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+    fontFamily: 'Raleway, sans-serif',
   },
   cursor: {
     fontWeight: 'bold',
     fontSize: '14px',
     color: 'gray',
-    animation: 'blink 1s step-end infinite', // Blinking effect
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '40px'
-  },
-  loginButton: {
-    padding: '10px 15px',
-    fontSize: '13px',
-    backgroundColor: 'white',
-    color: 'black',
-    border: '1px solid black',
-    cursor: 'pointer',
-    borderRadius: '5px',
-    fontFamily: 'Raleway, sans-serif',
+    animation: 'blink 1s step-end infinite',
   },
 };
 
