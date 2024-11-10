@@ -40,8 +40,7 @@ const Home = () => {
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            {/* <button style={styles.loginButton}>Login with Gmail</button> */}
-            <LoginButton />
+            <LoginButton style={styles.loginButton}/>
           </div>
         )}
       </div>
@@ -81,9 +80,9 @@ const styles = {
   buttonContainer: {
     display: 'flex',
     justifyContent: 'flex-end',
+    marginTop: '40px'
   },
   loginButton: {
-    marginTop: '40px',
     padding: '10px 15px',
     fontSize: '13px',
     backgroundColor: 'white',
