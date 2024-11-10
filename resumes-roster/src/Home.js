@@ -42,8 +42,8 @@ const Home = () => {
         </p>
         {showButton && (
           <div style={styles.buttonContainer}>
-            <LoginButton style={styles.choiceButton} />
-            <button style={styles.choiceButton} onClick={handleResumeRoastClick}>
+            <LoginButton style={styles.loginButton} />
+            <button style={styles.roastButton} onClick={handleResumeRoastClick}>
               Roast Resume
             </button>
           </div>
@@ -54,34 +54,40 @@ const Home = () => {
 };
 
 const styles = {
+  buttonContainer: {
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   centeredPage: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    padding: '20px',
-    minHeight: '100vh',
-    backgroundColor: '#ffffff',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "column",
+    padding: "20px",
+    minHeight: "100vh",
+    backgroundColor: "#ffffff",
   },
   textContainer: {
-    maxWidth: '450px',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    padding: '10px',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#f8f9fa',
+    maxWidth: "450px",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    padding: "10px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    backgroundColor: "#f8f9fa",
   },
   centeredText: {
-    fontFamily: 'Raleway, sans-serif',
-    color: '#000',
+    fontFamily: "Raleway, sans-serif",
+    color: "#000",
   },
-  choiceButton: {
+  loginButton: {
     padding: '10px 20px',
     fontSize: '14px',
-    backgroundColor: 'black',
+    backgroundColor: '#007bff',
     color: 'white',
     border: 'none',
     cursor: 'pointer',
@@ -89,10 +95,10 @@ const styles = {
     fontFamily: 'Raleway, sans-serif',
   },
   cursor: {
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'gray',
-    animation: 'blink 1s step-end infinite',
+    fontWeight: "bold",
+    fontSize: "14px",
+    color: "gray",
+    animation: "blink 1s step-end infinite",
   },
 };
 

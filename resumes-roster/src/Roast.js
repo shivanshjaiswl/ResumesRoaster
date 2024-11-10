@@ -6,22 +6,82 @@ const Roast = () => {
   const [currentMessage, setCurrentMessage] = useState('');
   const [showYesNoButtons, setShowYesNoButtons] = useState(false);
   const [showOkayButtons, setShowOkayButtons] = useState(false);
+  // const [phases, setPhases] = useState([]);
   const pageEndRef = useRef(null);
 
-  const phases = [
+  // data calls for roasts
+  const [finalRoast, setFinalRoast] = useState('');
+  const [companyRoast, setCompanyRoast] = useState('');
+  const [error, setError] = useState('');
+  // const [loading, setLoading]= useState(true);
+
+
+
+
+  useEffect(() => {
+    const fetchCompanyRoast = async () => {
+      try {
+        const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/get_company', {
+          method: 'GET',
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch company roast');
+        }
+  
+        const data = await response.json(); // Parse the response as JSON
+        console.log(data);
+        setCompanyRoast(data); // Store the parsed data in state
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+  
+    fetchCompanyRoast();
+    
+  }, []);
+
+  useEffect(() => {
+    const fetchFinalRoast = async () => {
+      try {
+        const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link/final_roast', {
+          method: 'GET',
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to fetch company roast');
+        }
+  
+        const data = await response.json(); // Parse the response as JSON
+        console.log(data);
+        setFinalRoast(data); // Store the parsed data in state
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+  
+    fetchFinalRoast();
+    
+  }, []);
+
+  
+  var phases = ([
     "Loading your emails... Google is limiting how many people can use this app at once, so you'll need to wait or try again later.",
     "Analyzing your rejection history...",
     "lol\n\nomg\n\nokay hold up",
-    "Did you really get rejected by...",
-    "", // Placeholder for conditional phase 5 based on response
-    "oh great another finance bro",
+    `Did you really get rejected by `+companyRoast.company,
+    "", // Placeholder for conditional phase 5
+    companyRoast.roast,
     "Finding a lot of applications with no responses",
     "Like a LOT.",
-    "You've been rejected by x amount of companies this year",
+    "You've been rejected by "+companyRoast.count+" companies this year",
     "u okay?", 
-    "You clearly haven't been to the career fair this year either",
-    "test"
-  ];
+    "You clearly haven't been to the career fair this year",
+    finalRoast.roast
+  ])
+
+
+  
 
   const typeWriter = async (phaseIndex = 0) => {
     if (phaseIndex >= phases.length) return;
@@ -31,6 +91,7 @@ const Roast = () => {
     setShowYesNoButtons(false);
     setShowOkayButtons(false);
 
+    // Type out the current phase text
     for (let i = 0; i < phases[phaseIndex].length; i++) {
       accumulatedText += phases[phaseIndex][i];
       setCurrentMessage(accumulatedText + '█');
@@ -45,6 +106,7 @@ const Roast = () => {
     });
     setCurrentMessage('');
 
+    // Show Yes/No buttons for the 4th phase only
     if (phaseIndex === 3 || phaseIndex === 4) {
       setShowYesNoButtons(true);
     } else if (phaseIndex === 9) {
@@ -77,26 +139,20 @@ const Roast = () => {
 
     // Update phase 5 based on response
     if (phaseIndex === 4) {
-      phases[4] = response.toLowerCase() === 'yes'
-        ? "Like unironically?..."
-        : "Are you sure, because I can see the email in my database?...";
-    }
-
-    // Handle specific cases for "alright whatever man" and "listen i'm just a neural net"
-    if (phaseIndex === 5 && response.toLowerCase() === 'yes') {
-      await typeWriterMessage("Alright whatever man");
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      typeWriter(6); // Move to the next phase after displaying "Alright whatever man"
-      return;
-    }
-
-    if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
+      if (response.toLowerCase() === 'yes') {
+        phases[4] = "Like unironically?...";
+      } else {
+        phases[4] = "Are you sure, because I can see the email in my database?...";
+      }
+    } else if (phaseIndex === 5) {
+      const previousResponse = messages[messages.length - 2]?.text;
+      if (previousResponse?.toLowerCase() === 'no...' && response.toLowerCase() === 'yes') {
+        phases[5] = "Alright whatever man";
+        phases.splice(6, 0, "oh great another finance bro");
+      }
+    } else if (phaseIndex === 9 && response.toLowerCase() === 'not really') {
       await typeWriterMessage("listen i'm just a neural net do what you gotta do");
       return;
-    }
-
-    if (phaseIndex === 10) {
-      await typeWriterMessage(response.toLowerCase() === 'yes' ? "Hard to believe." : "I can visibly tell.");
     }
 
     const nextPhaseIndex = messages.filter(msg => msg.isAI).length;
@@ -116,6 +172,8 @@ const Roast = () => {
     setCurrentMessage('');
     pageEndRef.current.scrollIntoView({ behavior: 'smooth' });
   };
+
+
 
   return (
     <div style={styles.centeredPage}>
@@ -141,6 +199,12 @@ const Roast = () => {
           <div style={styles.flexEndButtonContainer}>
             <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
             <button style={styles.choiceButton} onClick={() => handleResponse("no...")}>no...</button>
+          </div>
+        )}
+        {showOkayButtons && (
+          <div style={styles.flexEndButtonContainer}>
+            <button style={styles.choiceButton} onClick={() => handleResponse("yes")}>yes</button>
+            <button style={styles.choiceButton} onClick={() => handleResponse("no")}>no...</button>
           </div>
         )}
         {showOkayButtons && (
