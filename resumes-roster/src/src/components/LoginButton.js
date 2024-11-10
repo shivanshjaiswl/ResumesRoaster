@@ -1,10 +1,32 @@
 import { useGoogleLogin } from '@react-oauth/google';
 
 
+
 function LoginButton(){
+    const sendToken = async (token) => {
+        try {
+          const response = await fetch('https://rnftc-2620-cc-8000-1c83-b514-5f33-49fd-39f7.a.free.pinggy.link//token_id', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: token }),
+          });
+      
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+      
+          const data = await response.json();
+          console.log('Success:', data);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+      
   const login = useGoogleLogin({
     onSuccess: (tokenResponse) => {
-        console.log(tokenResponse)
+        sendToken(tokenResponse.access_token)
         console.log('Access Token:', tokenResponse.access_token);
         // Use the access token to make API calls or pass it to your backend
     },
